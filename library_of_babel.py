@@ -4,17 +4,9 @@ import random
 import sys
 
 length_of_page = 3239
-loc_mult = pow(30, length_of_page)
-title_mult = pow(30, 25)
+loc_mult = pow(94, length_of_page)
+title_mult = pow(94, 25)
 
-#29 output letters: alphabet plus comma, space, and period
-#alphanumeric in hex address (base 36): 3260
-#in wall: 4
-#in shelf: 5
-#in volumes: 32
-#pages: 410
-#letters per page: 3239
-#titles have 25 char
 
 help_text = '''
 --checkout <addr> - Checks out a page of a book. Also displays the page's title.
@@ -29,33 +21,41 @@ Mind the quotemarks.
 
 --fsearch <file> - Does exactly the search does, but with text in the file.
 
---file <file> - Dump rusult into the file
+--file <file> - Dump result into the file
 
 --help (or help, or nothing, or word salad) - Prints this message'''
 
+urdu_chars = set("۰ ۱ ۲ ۳ ۴ ۵ ۶ ۷ ۸ ۹"
+                "آ أ ا ب پ ت ٹ ث ج چ ح خ د ڈ ذ ر ڑ ز ژ س ش ص ض ط ظ ع غ ف ق ک گ ل "
+                " م ن ں و ؤ ہ ۂ ۃ ھ ء ی ئ ے ۓ \n"
+                "؛ ، ٫  ؟ ۔ ٪"
+                "\u064e \u064B \u0670 \u0650 \u064F \u064d"
+                " ؀ ؁ ؂ ؃ ؍ ؎ ؏ ؐ ؑ ؒ ؓ ؔ ؕ ٌ ّ ْ ٓ ٔ ٖ ٗ ٘ ٬".split())
 
+# Complete list of Urdu language Characters.
+urdu_chars = URDU_ALPHABETS.union(urdu_chars,set(' '))
 
 
 
 def text_prep(text):
-    digs = set('abcdefghijklmnopqrstuvwxyz, .')
+    # digs = set('abcdefghijklmnopqrstuvwxyz, .')
     prepared = ''
     for letter in text:
-        if letter in digs:
+        if letter in urdu_chars:
             prepared += letter
-        elif letter.lower() in digs:
-            prepared += letter.lower()
-        elif letter == '\n':
-            prepared += ' '
+        # elif letter.lower() in digs:
+        #     prepared += letter.lower()
+        # elif letter == '\n':
+        #     prepared += ' '
     return prepared
-    
-    
+
+
 
 def arg_check(input_array):
-    coms = {'--checkout': [0, None], 
+    coms = {'--checkout': [0, None],
             '--search': [0, None],
-             '--test': [0, None], 
-             '--fsearch': [0, None], 
+             '--test': [0, None],
+             '--fsearch': [0, None],
              '--fcheckout': [0, None],
              '--file': [0, None]}
     try:
@@ -90,18 +90,18 @@ def arg_check(input_array):
         sys.exit()
     return coms
 
-    
+
 def filed(input_dict, text):
     if input_dict['--file'][0]:
         with open(input_dict['--file'][1], 'w') as file:
             file.writelines(text)
         print('\nFile '+ input_dict['--file'][1] + ' was writen')
-        
-        
+
+
 
 def test():
     assert stringToNumber('a') == 0, stringToNumber('a')
-    assert stringToNumber('ba') == 29, stringToNumber('ba')
+    assert stringToNumber('ba') == 93, stringToNumber('ba')
     assert len(getPage('asaskjkfsdf:2:2:2:33')) == length_of_page, len(getPage('asasrkrtjfsdf:2:2:2:33'))
     assert 'hello kitty' == toText(int(int2base(stringToNumber('hello kitty'), 36), 36))
     assert int2base(4, 36) == '4', int2base(4, 36)
@@ -149,7 +149,7 @@ def main(input_dict):
         text  ='\nTitle: '+getTitle(key_str) + '\n'+getPage(key_str)+'\n'
         print(text)
         filed(input_dict, text)
-        
+
 def search(search_str):
     wall = str(int(random.random()*4))
     shelf = str(int(random.random()*5))
@@ -159,7 +159,7 @@ def search(search_str):
     loc_str = page + volume + shelf + wall
     loc_int = int(loc_str) #make integer
     an = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-    digs = 'abcdefghijklmnopqrstuvwxyz, .'
+    digs = ''.join(list(urdu_chars))
     hex_addr = ''
     depth = int(random.random()*(length_of_page-len(search_str)))
     #random padding that goes before the text
@@ -191,7 +191,7 @@ def getTitle(address):
     if len(result) < 25:
         #adding pseudorandom chars
         random.seed(result)
-        digs = 'abcdefghijklmnopqrstuvwxyz, .'
+        digs = ''.join(list(urdu_chars))
         while len(result) < 25:
             result += digs[int(random.random()*len(digs))]
     elif len(result) > 25:
@@ -224,7 +224,7 @@ def getPage(address):
     if len(result) < length_of_page:
         #adding pseudorandom chars
         random.seed(result)
-        digs = 'abcdefghijklmnopqrstuvwxyz, .'
+        digs = ''.join(list(urdu_chars))
         while len(result) < length_of_page:
             result += digs[int(random.random()*len(digs))]
     elif len(result) > length_of_page:
@@ -232,25 +232,25 @@ def getPage(address):
     return result
 
 def toText(x):
-    digs = 'abcdefghijklmnopqrstuvwxyz, .'
+    digs = ''.join(list(urdu_chars))
     if x < 0: sign = -1
     elif x == 0: return digs[0]
     else: sign = 1
     x *= sign
     digits = []
     while x:
-        digits.append(digs[x % 29])
-        x //= 29
+        digits.append(digs[x % 93])
+        x //= 93
     if sign < 0:
         digits.append('-')
     digits.reverse()
     return ''.join(digits)
 
 def stringToNumber(iString):
-    digs = 'abcdefghijklmnopqrstuvwxyz, .'
+    digs = ''.join(list(urdu_chars))
     result = 0
     for x in range(len(iString)):
-        result += digs.index(iString[len(iString)-x-1])*pow(29,x)
+        result += digs.index(iString[len(iString)-x-1])*pow(93,x)
     return result
 
 def int2base(x, base):
