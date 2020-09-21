@@ -4,8 +4,8 @@ import random
 import sys
 
 length_of_page = 3239
-loc_mult = pow(94, length_of_page)
-title_mult = pow(94, 25)
+loc_mult = pow(90, length_of_page)
+title_mult = pow(90, 25)
 
 
 help_text = '''
@@ -25,15 +25,12 @@ Mind the quotemarks.
 
 --help (or help, or nothing, or word salad) - Prints this message'''
 
-urdu_chars = set("۰ ۱ ۲ ۳ ۴ ۵ ۶ ۷ ۸ ۹"
+urdu_chars = sorted(set("۰ ۱ ۲ ۳ ۴ ۵ ۶ ۷ ۸ ۹"
                 "آ أ ا ب پ ت ٹ ث ج چ ح خ د ڈ ذ ر ڑ ز ژ س ش ص ض ط ظ ع غ ف ق ک گ ل "
                 " م ن ں و ؤ ہ ۂ ۃ ھ ء ی ئ ے ۓ \n"
                 "؛ ، ٫  ؟ ۔ ٪"
                 "\u064e \u064B \u0670 \u0650 \u064F \u064d"
-                " ؀ ؁ ؂ ؃ ؍ ؎ ؏ ؐ ؑ ؒ ؓ ؔ ؕ ٌ ّ ْ ٓ ٔ ٖ ٗ ٘ ٬".split())
-
-# Complete list of Urdu language Characters.
-urdu_chars = urdu_chars.union(set(' '))
+                " ؀ ؁ ؂ ؃ ؍ ؎ ؏ ؐ ؑ ؒ ؓ ؔ ؕ ٌ ّ ْ ٓ ٔ ٖ ٗ ٘ ٬"))
 
 
 
@@ -99,16 +96,16 @@ def filed(input_dict, text):
 
 
 
-def test():
-    assert stringToNumber('a') == 0, stringToNumber('a')
-    assert stringToNumber('ba') == 93, stringToNumber('ba')
-    assert len(getPage('asaskjkfsdf:2:2:2:33')) == length_of_page, len(getPage('asasrkrtjfsdf:2:2:2:33'))
-    assert 'hello kitty' == toText(int(int2base(stringToNumber('hello kitty'), 36), 36))
-    assert int2base(4, 36) == '4', int2base(4, 36)
-    assert int2base(10, 36) == 'A', int2base(10, 36)
-    test_string = '.................................................'
-    assert test_string in getPage(search(test_string))
-    print ('Tests completed')
+# def test():
+#     assert stringToNumber('a') == 0, stringToNumber('a')
+#     assert stringToNumber('ba') == 89, stringToNumber('ba')
+#     assert len(getPage('asaskjkfsdf:2:2:2:33')) == length_of_page, len(getPage('asasrkrtjfsdf:2:2:2:33'))
+#     assert 'hello kitty' == toText(int(int2base(stringToNumber('hello kitty'), 36), 36))
+#     assert int2base(4, 36) == '4', int2base(4, 36)
+#     assert int2base(10, 36) == 'A', int2base(10, 36)
+#     test_string = '.................................................'
+#     assert test_string in getPage(search(test_string))
+#     print ('Tests completed')
 
 
 def main(input_dict):
@@ -239,8 +236,8 @@ def toText(x):
     x *= sign
     digits = []
     while x:
-        digits.append(digs[x % 93])
-        x //= 93
+        digits.append(digs[x % 89])
+        x //= 89
     if sign < 0:
         digits.append('-')
     digits.reverse()
@@ -250,7 +247,7 @@ def stringToNumber(iString):
     digs = ''.join(list(urdu_chars))
     result = 0
     for x in range(len(iString)):
-        result += digs.index(iString[len(iString)-x-1])*pow(93,x)
+        result += digs.index(iString[len(iString)-x-1])*pow(89,x)
     return result
 
 def int2base(x, base):
