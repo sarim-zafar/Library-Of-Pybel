@@ -33,7 +33,7 @@ urdu_chars = set("۰ ۱ ۲ ۳ ۴ ۵ ۶ ۷ ۸ ۹"
                 " ؀ ؁ ؂ ؃ ؍ ؎ ؏ ؐ ؑ ؒ ؓ ؔ ؕ ٌ ّ ْ ٓ ٔ ٖ ٗ ٘ ٬".split())
 
 # Complete list of Urdu language Characters.
-urdu_chars = URDU_ALPHABETS.union(urdu_chars,set(' '))
+urdu_chars = urdu_chars.union(set(' '))
 
 
 
