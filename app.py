@@ -1,5 +1,5 @@
 import streamlit as st
-from library_of_babel import getPage, getTitle, search, searchTitle, text_prep, length_of_page, urdu_chars
+from library_of_babel import getPage, getTitle, search, searchTitle, text_prep, length_of_page, urdu_chars, get_deterministic_padding
 
 # Set the page title and layout
 st.set_page_config(page_title="Urdu Library of Babel", layout="wide")
